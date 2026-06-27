@@ -98,6 +98,7 @@ if (!(root instanceof HTMLElement) && import.meta.env.DEV) {
 }
 
 const getCurrentUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL
   if (location.hostname.includes("opencode.ai")) return "http://localhost:4096"
   if (import.meta.env.DEV)
     return `http://${import.meta.env.VITE_OPENCODE_SERVER_HOST ?? "localhost"}:${import.meta.env.VITE_OPENCODE_SERVER_PORT ?? "4096"}`
@@ -126,7 +127,13 @@ const platform: Platform = {
 }
 
 if (root instanceof HTMLElement) {
-  const server: ServerConnection.Http = { type: "http", http: { url: getCurrentUrl() } }
+  const server: ServerConnection.Http = {
+    type: "http",
+    http: {
+      url: getCurrentUrl(),
+      ...(import.meta.env.VITE_SERVER_PASSWORD ? { password: import.meta.env.VITE_SERVER_PASSWORD } : {}),
+    },
+  }
   render(
     () => (
       <PlatformProvider value={platform}>
@@ -134,7 +141,7 @@ if (root instanceof HTMLElement) {
           <AppInterface
             defaultServer={ServerConnection.Key.make(getDefaultUrl())}
             servers={[server]}
-            disableHealthCheck
+            disableHealthCheck={!import.meta.env.VITE_API_URL}
           />
         </AppBaseProviders>
       </PlatformProvider>
