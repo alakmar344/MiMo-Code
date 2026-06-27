@@ -4,6 +4,7 @@ interface ImportMetaEnv {
   readonly VITE_OPENCODE_CHANNEL?: "dev" | "beta" | "prod"
   readonly VITE_API_URL?: string
   readonly VITE_SERVER_PASSWORD?: string
+  readonly VITE_STANDALONE?: string
 }
 
 interface ImportMeta {
