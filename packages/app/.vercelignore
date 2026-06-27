@@ -1,0 +1,7 @@
+node_modules
+dist
+e2e
+.playwright
+*.test.ts
+happydom.ts
+playwright.config.ts
